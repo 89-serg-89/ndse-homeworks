@@ -1,7 +1,6 @@
 const readline = require('readline')
 
 const rl = readline.createInterface({ input: process.stdin, output: process.stdout })
-let min, max
 
 const isNumber = val => {
   const num = Number(val)
@@ -16,8 +15,7 @@ const inputMin = () => {
   return new Promise((resolve) => {
     rl.question('Добро пожаловать! Укажи минимальное число: ', val => {
       if (isNumber(val)) {
-        min = Number(val)
-        resolve()
+        resolve(Number(val))
         return
       }
       return init()
@@ -29,8 +27,7 @@ const inputMax = () => {
   return new Promise((resolve) => {
     rl.question('Укажи максимальное число: ', val => {
       if (isNumber(val)) {
-        max = Number(val)
-        resolve()
+        resolve(Number(val))
         return
       }
       return init()
@@ -39,8 +36,9 @@ const inputMax = () => {
 }
 
 const init = async () => {
-  await inputMin()
-  await inputMax()
+  let min, max
+  min = await inputMin()
+  max = await inputMax()
 
   const randomNum = Math.floor(Math.random() * (max - min + 1)) + min
   console.log(`Отлично, давай попробуем отгадать число: от ${min} до ${max}`)
