@@ -1,0 +1,16 @@
+{
+  "name": "004-stream",
+  "version": "1.0.0",
+  "description": "",
+  "main": "game.js",
+  "author": "Sergey Sigida <serega_pro@inbox.ru>",
+  "scripts": {
+    "game": "node game.js --log-file=game-log",
+    "analitics": "node analitics.js --log-file=game-log"
+  },
+  "dependencies": {
+    "yargs": "17.3.1"
+  },
+  "keywords": [],
+  "license": "ISC"
+}
