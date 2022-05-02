@@ -1,15 +1,23 @@
 require('dotenv').config()
+const path = require('path')
 const express = require('express')
+const bodyParser = require('body-parser')
 const app = express()
 const port = process.env.PORT || 3000
-const userRouter = require('./routing/user')
-const booksRouter = require('./routing/books')
+const userRouter = require('./routes/user')
+const booksRouter = require('./routes/books')
 const booksStore = require('./store/books')
 const BookModel = require('./models/book')
+const errorMiddleware = require('./middleware/error')
 
+app.use(bodyParser.json())
+app.use(bodyParser.urlencoded({ extended: true }))
 app.use(express.json())
+app.use('/public', express.static(path.join(__dirname, '/public')))
 app.use('/api/user', userRouter)
 app.use('/api/books', booksRouter)
+
+app.use(errorMiddleware)
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`)
@@ -21,9 +29,10 @@ const initBook = () => {
       `title ${item}`,
       `desc ${item}`,
       'Author',
-      'favorite',
-      'fileCover',
-      'fileName'
+      false,
+      'demo.jpg',
+      'fileName',
+      'demo.txt'
       ))
   })
 }
