@@ -4,18 +4,22 @@ const express = require('express')
 const bodyParser = require('body-parser')
 const app = express()
 const port = process.env.PORT || 3000
-const userRouter = require('./routes/user')
+const userApiRouter = require('./routes/api/user')
+const booksApiRouter = require('./routes/api/books')
 const booksRouter = require('./routes/books')
 const booksStore = require('./store/books')
 const BookModel = require('./models/book')
 const errorMiddleware = require('./middleware/error')
 
+app.set('view engine', 'ejs')
+
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(express.json())
 app.use('/public', express.static(path.join(__dirname, '/public')))
-app.use('/api/user', userRouter)
-app.use('/api/books', booksRouter)
+app.use('/books', booksRouter)
+app.use('/api/user', userApiRouter)
+app.use('/api/books', booksApiRouter)
 
 app.use(errorMiddleware)
 

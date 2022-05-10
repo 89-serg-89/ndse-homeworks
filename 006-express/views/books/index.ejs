@@ -1,0 +1,32 @@
+<%- include('../partials/layout-start.ejs'), { title: title } %>
+<div class="container">
+    <h1 class="mb-4"><%= title %></h1>
+    <a href="#" class="btn btn-primary mb-2">Добавить книгу</a>
+    <% if (books.length) { %>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Название</th>
+                    <th scope="col"></th>
+                </tr>
+            </thead>
+            <tbody>
+                <% books.forEach((book, idx) => { %>
+                    <tr>
+                        <th scope="row"><%= idx + 1 %></th>
+                        <td><%= book.title %></td>
+                        <td class="text-end">
+                            <a href="#" class="btn btn-success"><i class="bi bi-eye"></i></a>
+                            <a href="#" class="btn btn-primary"><i class="bi bi-pencil-square"></i></a>
+                            <a href="#" class="btn btn-danger"><i class="bi bi-trash"></i></a>
+                        </td>
+                    </tr>
+                <% }) %>
+            </tbody>
+        </table>
+    <% } else { %>
+        Пока нет книг
+    <% } %>
+</div>
+<%- include('../partials/layout-end.ejs') %>
