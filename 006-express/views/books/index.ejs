@@ -17,16 +17,18 @@
                         <th scope="row"><%= idx + 1 %></th>
                         <td><%= book.title %></td>
                         <td class="text-end">
-                            <a href="#" class="btn btn-success"><i class="bi bi-eye"></i></a>
+                            <a href="/books/<%= book.id %>" class="btn btn-success"><i class="bi bi-eye"></i></a>
                             <a href="#" class="btn btn-primary"><i class="bi bi-pencil-square"></i></a>
-                            <a href="#" class="btn btn-danger"><i class="bi bi-trash"></i></a>
+                            <form action="/books/delete/<%= book.id %>" method="post">
+                                <button class="btn btn-danger"><i class="bi bi-trash"></i></button>
+                            </form>
                         </td>
                     </tr>
                 <% }) %>
             </tbody>
         </table>
     <% } else { %>
-        Пока нет книг
+        <p>Пока нет книг</p>
     <% } %>
 </div>
 <%- include('../partials/layout-end.ejs') %>

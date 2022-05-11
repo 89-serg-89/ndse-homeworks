@@ -1,0 +1,22 @@
+<%- include('../partials/layout-start.ejs'), { title: title } %>
+<div class="container">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/">Home</a></li>
+            <li class="breadcrumb-item"><a href="/books/">Books</a></li>
+            <li class="breadcrumb-item active" aria-current="page"><%= book.title %></li>
+        </ol>
+    </nav>
+    <div class="card">
+        <img src="/public/books/imgs/<%= book.fileCover %>" class="card-img-top" alt="<%= book.title %>">
+        <div class="card-body">
+            <h5 class="card-title"><%= book.title %></h5>
+            <p class="card-text"><%= book.description %></p>
+            <div class="text-end">
+                <a href="#" class="btn btn-primary"><i class="bi bi-pencil-square"></i></a>
+                <a href="#" class="btn btn-danger"><i class="bi bi-trash"></i></a>
+            </div>
+        </div>
+    </div>
+</div>
+<%- include('../partials/layout-end.ejs') %>

@@ -1,27 +1,28 @@
 const path = require('path')
 const express = require('express')
 const router = express.Router()
-let booksStore = require('../../store/books')
 const BookModel = require('../../models/book')
 const fileMiddleware = require('../../middleware/file')
+let store = require('../../helpers/store')
 
-router.get('/', (req, res) => {
+router.get('/', async (req, res) => {
   try {
-    res.json(booksStore)
+    const data = await store.get('books')
+    res.json(data)
   } catch (e) {
     throw new Error(e)
   }
 })
 
-router.get('/:id', (req, res) => {
+router.get('/:id', async (req, res) => {
   try {
-    const elem = booksStore.find(item => item.id === req.params.id)
-    if (!elem) {
+    const book = await store.getById('books', req.params.id)
+    if (!book) {
       res.status(404)
       res.json('book not found')
       return
     }
-    res.json(elem)
+    res.json(book)
   } catch (e) {
     throw new Error(e)
   }
@@ -29,7 +30,7 @@ router.get('/:id', (req, res) => {
 
 router.post('/', fileMiddleware.single('cover'), (req, res) => {
   try {
-    const { title, description, authors, favorite, fileCover, fileName, fileBook } = req.body
+    const { title, description, authors, favorite, fileCover, fileName } = req.body
     if (title && description) {
       const filenameBook = req?.file.filename || ''
       booksStore.push(new BookModel(title, description, authors, favorite, fileCover, fileName, filenameBook))
@@ -57,15 +58,14 @@ router.put('/:id', (req, res) => {
   }
 })
 
-router.delete('/:id', (req, res) => {
+router.delete('/:id', async (req, res) => {
   try {
-    const elem = booksStore.some(item => item.id === req.params.id)
-    if (!elem) {
+    const count = await store.deleteById('books', req.params.id)
+    if (!count) {
       res.status(404)
       res.json('book not found')
       return
     }
-    booksStore = booksStore.filter(item => item.id !== req.params.id)
     res.json('true')
   } catch (e) {
     throw new Error(e)
