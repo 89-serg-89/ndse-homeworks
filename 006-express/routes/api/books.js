@@ -28,30 +28,54 @@ router.get('/:id', async (req, res) => {
   }
 })
 
-router.post('/', fileMiddleware.single('cover'), (req, res) => {
+router.post(
+  '/',
+  fileMiddleware.fields([
+    {
+      name: 'fileCover', maxCount: 1
+    },
+    {
+      name: 'fileBook', maxCount: 1
+    }
+  ]),
+  async (req, res) => {
   try {
-    const { title, description, authors, favorite, fileCover, fileName } = req.body
-    if (title && description) {
-      const filenameBook = req?.file.filename || ''
-      booksStore.push(new BookModel(title, description, authors, favorite, fileCover, fileName, filenameBook))
-      res.json('success')
+    let { title, description, authors, favorite, fileCover, fileName, fileBook } = req.body
+    if (!fileCover && req?.file?.filename) fileCover = req?.file?.filename
+    const result = await store.set('books', new BookModel(title, description, authors, favorite, fileCover, fileName, fileBook))
+    if (!result) {
+      res.status(404)
+      res.json('Error')
       return
     }
-    res.status(404).json('title && description required')
+    res.json('success')
   } catch (e) {
     throw new Error(e)
   }
 })
 
-router.put('/:id', (req, res) => {
+router.put(
+  '/:id',
+  fileMiddleware.fields([
+    {
+      name: 'fileCover', maxCount: 1
+    },
+    {
+      name: 'fileBook', maxCount: 1
+    }
+  ]),
+  async (req, res) => {
   try {
-    let elemIdx = booksStore.findIndex(item => item.id === req.params.id)
-    if (elemIdx === -1) {
+    const data = req.body
+    if (!data.fileCover && req?.file?.filename) data.fileCover = req?.file?.filename
+    const result = await store.put('books', req.params.id, {
+      ...req.body
+    })
+    if (!result) {
       res.status(404)
-      res.json('book not found')
+      res.json('Error')
       return
     }
-    booksStore[elemIdx] = {...booksStore[elemIdx], ...req.body}
     res.json('success')
   } catch (e) {
     throw new Error(e)
@@ -72,12 +96,12 @@ router.delete('/:id', async (req, res) => {
   }
 })
 
-router.get('/:id/download', (req, res) => {
+router.get('/:id/download', async (req, res) => {
   try {
-    const elem = booksStore.find(item => item.id === req.params.id)
-    if (!elem) res.status(404).json('Book not found')
-    const pathDir = path.join(__dirname, '..', 'public', 'books', 'files', elem.fileBook)
-    res.download(pathDir, elem.fileBook, err => {
+    const book = await store.getById('books', req.params.id)
+    if (!book) res.status(404).json('Book not found')
+    const pathDir = path.join(__dirname, '..', 'public', 'books', 'files', book.fileBook)
+    res.download(pathDir, book.fileBook, err => {
       res.status(404).end()
     })
   } catch (e) {

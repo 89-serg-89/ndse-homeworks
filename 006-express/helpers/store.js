@@ -37,6 +37,25 @@ const set = async (storeName, payload) => {
   })
 }
 
+const put = async (storeName, id, payload) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      if (!id) throw new Error('not id')
+      const content = await fs.promises.readFile(path.join(__dirname, '..', '/store', `${storeName}.json`), 'utf-8')
+      const json = JSON.parse(content)
+      const idxElem = json.data.findIndex(i => i.id === id)
+      if (idxElem > -1) {
+        json.data[idxElem] = { ...json.data[idxElem], ...payload }
+        await fs.promises.writeFile(path.join(__dirname, '..', '/store', `${storeName}.json`), JSON.stringify(json, null, 2))
+        resolve(true)
+      }
+      resolve(false)
+    } catch (e) {
+      reject(e)
+    }
+  })
+}
+
 const deleteById = (storeName, id) => {
   return new Promise(async (resolve, reject) => {
     try {
@@ -56,5 +75,6 @@ module.exports = {
   get,
   getById,
   set,
+  put,
   deleteById
 }

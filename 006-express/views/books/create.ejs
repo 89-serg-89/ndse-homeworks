@@ -1,0 +1,13 @@
+<%- include('../partials/layout-start.ejs'), { title: title } %>
+<div class="container">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/">Home</a></li>
+            <li class="breadcrumb-item"><a href="/books/">Books</a></li>
+            <li class="breadcrumb-item active" aria-current="page"><%= title %></li>
+        </ol>
+    </nav>
+    <%- include('./form.ejs') %>
+</div>
+<%- include('../partials/layout-end.ejs') %>
+

@@ -10,11 +10,17 @@
     <div class="card">
         <img src="/public/books/imgs/<%= book.fileCover %>" class="card-img-top" alt="<%= book.title %>">
         <div class="card-body">
-            <h5 class="card-title"><%= book.title %></h5>
-            <p class="card-text"><%= book.description %></p>
-            <div class="text-end">
-                <a href="#" class="btn btn-primary"><i class="bi bi-pencil-square"></i></a>
-                <a href="#" class="btn btn-danger"><i class="bi bi-trash"></i></a>
+            <div class="d-flex align-items-end mb-3">
+                <p class="mb-0">Название:</p>
+                <h5 class="card-title mb-0 ms-1"><%= book.title %></h5>
+            </div>
+            <p class="card-text">Описание: <%= book.description %></p>
+            <p class="card-text">Избранное: <% if (book.favorite) { %> Да <% } else { %> 'Нет' <% } %></p>
+            <div class="d-flex justify-content-end">
+                <a href="/books/edit/<%= book.id %>" class="btn btn-primary"><i class="bi bi-pencil-square"></i></a>
+                <form action="/books/delete/<%= book.id %>" method="post">
+                    <button class="btn btn-danger"><i class="bi bi-trash"></i></button>
+                </form>
             </div>
         </div>
     </div>

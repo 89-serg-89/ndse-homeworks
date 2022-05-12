@@ -1,0 +1,36 @@
+<form action="/books/<%= route %>/<%= book.id %>" method="post" enctype="multipart/form-data">
+    <div class="mb-3">
+        <label for="inputTitle" class="form-label">Название</label>
+        <input type="text" name="title" class="form-control" id="inputTitle" value="<%= book.title %>">
+    </div>
+    <div class="mb-3">
+        <label for="inputDesc" class="form-label">Описание</label>
+        <input type="text" name="description" class="form-control" id="inputDesc" value="<%= book.description %>">
+    </div>
+    <div class="mb-3">
+        <label for="inputAuthors" class="form-label">Автор</label>
+        <input type="text" name="authors" class="form-control" id="inputAuthors" value="<%= book.authors %>">
+    </div>
+    <div class="mb-3">
+        <label for="inputFileName" class="form-label">Имя файла</label>
+        <input type="text" name="fileName" class="form-control" id="inputFileName" value="<%= book.fileName %>">
+    </div>
+    <% if (book.fileCover) { %>
+        <div style="max-width: 160px;">
+            <img src="/public/books/imgs/<%= book.fileCover %>" class="card-img-top" alt="<%= book.title %>">
+        </div>
+    <% } %>
+    <div class="mb-3">
+        <label for="inputFileCover" class="form-label">Обложка</label>
+        <input type="file" name="fileCover" class="form-control" id="inputFileCover" value="/public/books/imgs/<%= book.fileCover %>">
+    </div>
+<!--    <div class="mb-3">-->
+<!--        <label for="inputFileBook" class="form-label">Файл книги</label>-->
+<!--        <input type="file" name="fileBook" class="form-control" id="inputFileBook" value="<%= book.fileBook %>">-->
+<!--    </div>-->
+    <div class="mb-3 form-check">
+        <input type="checkbox" name="favorite" class="form-check-input" id="inputFavorite" <% if (book.favorite) { %> checked <% } %>>
+        <label class="form-check-label" for="inputFavorite">Избранное</label>
+    </div>
+    <button type="submit" class="btn btn-primary">Сохранить</button>
+</form>

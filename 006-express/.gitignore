@@ -1,3 +1,4 @@
 node_modules
-store/books.json
+store/*.json
+public/books/*
 .env
