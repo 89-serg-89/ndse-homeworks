@@ -16,6 +16,7 @@ const errorMiddleware = require('./middleware/error')
 
 const store = require('./helpers/store')
 
+app.set('views', path.join(__dirname, '/views'))
 app.set('view engine', 'ejs')
 
 app.use(bodyParser.json())

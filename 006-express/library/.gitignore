@@ -1,4 +1,4 @@
 node_modules
 store/*.json
-public/books/*
+src/public/books/imgs
 .env

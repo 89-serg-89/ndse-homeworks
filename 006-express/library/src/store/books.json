@@ -1,0 +1,54 @@
+{
+  "data": [
+    {
+      "id": "1afb94da-d1dc-4644-9c2b-b09c34babca5",
+      "title": "title 1",
+      "description": "desc 1",
+      "authors": "Author",
+      "favorite": false,
+      "fileCover": "demo.jpg",
+      "fileName": "fileName",
+      "fileBook": "demo.txt"
+    },
+    {
+      "id": "39355672-a274-4b02-b133-f4dd4c8e4d90",
+      "title": "title 2 test",
+      "description": "desc 2",
+      "authors": "Author",
+      "favorite": "on",
+      "fileCover": "2022-05-15T09-33-38.443Z-mvWjr6NmyxUu_6KNNC5F6PxS4szPGzivTmtEtDGK5Aaxj3AB9gyJz00qj5uyyeY6SOsKR6SpVHXNddwOLhgJYyFy.jpg",
+      "fileName": "fileName",
+      "fileBook": "demo.txt"
+    },
+    {
+      "id": "530499bb-4d39-4613-86d8-678021a8923f",
+      "title": "title 3",
+      "description": "desc 3",
+      "authors": "Author",
+      "favorite": false,
+      "fileCover": "demo.jpg",
+      "fileName": "fileName",
+      "fileBook": "demo.txt"
+    },
+    {
+      "id": "1287fc7c-d19d-4cc8-a346-dcb145ff3461",
+      "title": "title 4",
+      "description": "desc 4",
+      "authors": "Author",
+      "favorite": false,
+      "fileCover": "demo.jpg",
+      "fileName": "fileName",
+      "fileBook": "demo.txt"
+    },
+    {
+      "id": "3399d4c9-b4e3-4af6-aeab-e20d7a947407",
+      "title": "title 5",
+      "description": "desc 5",
+      "authors": "Author",
+      "favorite": false,
+      "fileCover": "demo.jpg",
+      "fileName": "fileName",
+      "fileBook": "demo.txt"
+    }
+  ]
+}
