@@ -31,7 +31,7 @@ app.use('/api/books', booksApiRouter)
 app.use(errorMiddleware)
 
 app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`)
+  console.log(`Library app listening on port ${port}`)
 })
 
 const initBook = async () => {

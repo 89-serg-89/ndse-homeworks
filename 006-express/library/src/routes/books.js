@@ -104,7 +104,10 @@ router.get('/', async (req, res) => {
 
 router.get('/:id', async (req, res) => {
   try {
-    const book = await store.getById('books', req.params.id)
+    const { id } = req.params
+    const book = await store.getById('books', id)
+    const result = await axios.get(`http://counter:3001/counter/${id}`)
+    console.log(result)
     if (!book) res.status(404).redirect('/404')
     res.render('books/view', {
       title: book.title,

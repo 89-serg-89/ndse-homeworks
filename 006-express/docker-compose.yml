@@ -1,0 +1,23 @@
+services:
+  store:
+    image: redis
+  counter:
+    build: ./counter
+    ports:
+      - 8000:3001
+    environment:
+      - PORT=3001
+      - REDIS_URL=redis://store
+    depends_on:
+      - store
+  library:
+    build: ./library
+    ports:
+      - 80:3000
+    environment:
+      - PORT=3000
+      - ORIGIN=http://localhost
+      - API_BOOKS=/api/books/
+    depends_on:
+      - store
+      - counter
