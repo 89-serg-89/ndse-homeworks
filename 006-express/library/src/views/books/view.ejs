@@ -16,6 +16,7 @@
             </div>
             <p class="card-text">Описание: <%= book.description %></p>
             <p class="card-text">Избранное: <% if (book.favorite) { %> Да <% } else { %> 'Нет' <% } %></p>
+            <p class="card-text">Просмотренно: <%= countVisible || 0 %> раз</p>
             <div class="d-flex justify-content-end">
                 <a href="/books/edit/<%= book.id %>" class="btn btn-primary"><i class="bi bi-pencil-square"></i></a>
                 <form action="/books/delete/<%= book.id %>" method="post">

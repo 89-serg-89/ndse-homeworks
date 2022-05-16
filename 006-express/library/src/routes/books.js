@@ -14,7 +14,7 @@ router.get('/create', (req, res) => {
       book: {}
     })
   } catch (e) {
-    console.log(e)
+    console.log(`Error: ${e}`)
     res.status(404).redirect('/404')
   }
 })
@@ -37,6 +37,7 @@ router.post(
       })
       res.redirect('/books')
     } catch (e) {
+      console.log(`Error: ${e}`)
       res.status(404).redirect('/404')
     }
   })
@@ -51,6 +52,7 @@ router.get('/edit/:id', async (req, res) => {
       book
     })
   } catch (e) {
+    console.log(`Error: ${e}`)
     res.status(404).redirect('/404')
   }
 })
@@ -75,6 +77,7 @@ router.post(
     })
     res.redirect('/books')
   } catch (e) {
+    console.log(`Error: ${e}`)
     res.status(404).redirect('/404')
   }
 })
@@ -86,6 +89,7 @@ router.post('/delete/:id', async (req, res) => {
     await axios.delete(url_api_books + id)
     res.redirect('/books')
   } catch (e) {
+    console.log(`Error: ${e}`)
     res.status(404).redirect('/404')
   }
 })
@@ -98,6 +102,7 @@ router.get('/', async (req, res) => {
       books: data
     })
   } catch (e) {
+    console.log(`Error: ${e}`)
     res.redirect('/404')
   }
 })
@@ -106,14 +111,15 @@ router.get('/:id', async (req, res) => {
   try {
     const { id } = req.params
     const book = await store.getById('books', id)
-    const result = await axios.get(`http://counter:3001/counter/${id}`)
-    console.log(result)
+    const countVisible = await axios.post(`http://${process.env.COUNTER_HOST || 'localhost'}:3001/counter/${id}/incr`)
     if (!book) res.status(404).redirect('/404')
     res.render('books/view', {
       title: book.title,
-      book
+      book,
+      countVisible: countVisible?.data?.count
     })
   } catch (e) {
+    console.log(`Error: ${e}`)
     res.redirect('/404')
   }
 })
