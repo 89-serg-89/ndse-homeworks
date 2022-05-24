@@ -14,11 +14,8 @@ services:
       - MONGO_INITDB_DATABASE=${DB_NAME:-books}
   counter:
     build: ./counter
-    ports:
-      - 8000:3001
     container_name: book_counter
     environment:
-      - PORT=3001
       - REDIS_URL=redis://store:6379
     depends_on:
       - mongoDB
@@ -34,11 +31,11 @@ services:
       - PORT=3000
       - ORIGIN=http://localhost
       - API_BOOKS=/api/books/
-      - COUNTER_HOST=counter
+      - COUNTER_ORIGIN=counter:3001
       - DB_USERNAME=${DB_USERNAME:-root}
       - DB_PASSWORD=${DB_PASSWORD:-pass}
       - DB_NAME=${DB_NAME:-books}
-      - DB_HOST=mongodb://localhost:27017
+      - DB_HOST=mongodb://mongoDB:27017
     volumes:
       - ./library:/app
     depends_on:

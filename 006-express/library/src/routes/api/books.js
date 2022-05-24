@@ -1,13 +1,12 @@
 const path = require('path')
 const express = require('express')
 const router = express.Router()
-const BookModel = require('../../models/book')
 const fileMiddleware = require('../../middleware/file')
-let store = require('../../helpers/store')
+const BookModel = require('../../models/book')
 
 router.get('/', async (req, res) => {
   try {
-    const data = await store.get('books')
+    const data = await BookModel.find()
     res.json(data)
   } catch (e) {
     throw new Error(e)
@@ -16,7 +15,7 @@ router.get('/', async (req, res) => {
 
 router.get('/:id', async (req, res) => {
   try {
-    const book = await store.getById('books', req.params.id)
+    const book = await BookModel.findById(req.params.id)
     if (!book) {
       res.status(404)
       res.json('book not found')
@@ -42,13 +41,14 @@ router.post(
   try {
     let { title, description, authors, favorite, fileCover, fileName, fileBook } = req.body
     if (!fileCover && req?.file?.filename) fileCover = req?.file?.filename
-    const result = await store.set('books', new BookModel(title, description, authors, favorite, fileCover, fileName, fileBook))
+    const book = new BookModel({title, description, authors, favorite, fileCover, fileName, fileBook})
+    const result = await book.save()
     if (!result) {
       res.status(404)
       res.json('Error')
       return
     }
-    res.json('success')
+    res.json(book)
   } catch (e) {
     throw new Error(e)
   }
@@ -68,7 +68,8 @@ router.put(
   try {
     const data = req.body
     if (!data.fileCover && req?.file?.filename) data.fileCover = req?.file?.filename
-    const result = await store.put('books', req.params.id, {
+    data.favorite = !!data.favorite
+    const result = await BookModel.findByIdAndUpdate(req.params.id, {
       ...req.body
     })
     if (!result) {
@@ -84,13 +85,13 @@ router.put(
 
 router.delete('/:id', async (req, res) => {
   try {
-    const count = await store.deleteById('books', req.params.id)
-    if (!count) {
+    const result = await BookModel.deleteOne({ _id: req.params.id })
+    if (result?.deletedCount < 1) {
       res.status(404)
       res.json('book not found')
       return
     }
-    res.json('true')
+    res.json('ok')
   } catch (e) {
     throw new Error(e)
   }
@@ -98,7 +99,7 @@ router.delete('/:id', async (req, res) => {
 
 router.get('/:id/download', async (req, res) => {
   try {
-    const book = await store.getById('books', req.params.id)
+    const book = await BookModel.findById(req.params.id)
     if (!book) res.status(404).json('Book not found')
     const pathDir = path.join(__dirname, '..', 'public', 'books', 'files', book.fileBook)
     res.download(pathDir, book.fileBook, err => {

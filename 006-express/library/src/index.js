@@ -10,11 +10,7 @@ const booksApiRouter = require('./routes/api/books')
 const booksRouter = require('./routes/books')
 const errorsRouter = require('./routes/errors')
 
-const BookModel = require('./models/book')
-
 const errorMiddleware = require('./middleware/error')
-
-const store = require('./helpers/store')
 
 app.set('views', path.join(__dirname, '/views'))
 app.set('view engine', 'ejs')
@@ -36,14 +32,9 @@ const PasswordDB = process.env.DB_PASSWORD || 'pass';
 const NameDB = process.env.DB_NAME || 'books'
 const HostDb = process.env.DB_HOST || 'mongodb://localhost:27017/'
 
-console.log(UserDB)
-console.log(PasswordDB)
-console.log(NameDB)
-console.log(HostDb)
-
 const init = async () => {
   try {
-    await mongoose.connect('mongodb://localhost:27017/', {
+    await mongoose.connect(HostDb, {
       user: UserDB,
       pass: PasswordDB,
       dbName: NameDB,

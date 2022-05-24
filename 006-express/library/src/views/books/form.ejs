@@ -1,4 +1,4 @@
-<form action="/books/<%= route %>/<%= book.id %>" method="post" enctype="multipart/form-data">
+<form action="/books/<%= route %>/<%= book._id %>" method="post" enctype="multipart/form-data">
     <div class="mb-3">
         <label for="inputTitle" class="form-label">Название</label>
         <input type="text" name="title" class="form-control" id="inputTitle" value="<%= book.title %>">

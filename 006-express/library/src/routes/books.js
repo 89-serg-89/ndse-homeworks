@@ -1,10 +1,10 @@
 const express = require('express')
 const router = express.Router()
 const axios = require('axios').default
-const store = require('../helpers/store')
 const fileMiddleware = require('../middleware/file')
 
 const url_api_books = process.env.ORIGIN + ':' + process.env.PORT + process.env.API_BOOKS
+const COUNTER_ORIGIN = process.env.COUNTER_ORIGIN || 'localhost:3001'
 
 router.get('/create', (req, res) => {
   try {
@@ -44,7 +44,9 @@ router.post(
 
 router.get('/edit/:id', async (req, res) => {
   try {
-    const book = await store.getById('books', req.params.id)
+    const id = req.params.id
+    const response = await axios.get(url_api_books + id)
+    const book = response.data
     if (!book) res.status(404).redirect('/404')
     res.render('books/edit', {
       title: `Редактирование ${book.title}`,
@@ -96,10 +98,11 @@ router.post('/delete/:id', async (req, res) => {
 
 router.get('/', async (req, res) => {
   try {
-    const data = await store.get('books')
+    const response = await axios.get(url_api_books)
+    const books = response.data
     res.render('books/index', {
       title: 'Список книг',
-      books: data
+      books
     })
   } catch (e) {
     console.log(`Error: ${e}`)
@@ -110,8 +113,9 @@ router.get('/', async (req, res) => {
 router.get('/:id', async (req, res) => {
   try {
     const { id } = req.params
-    const book = await store.getById('books', id)
-    const countVisible = await axios.post(`http://${process.env.COUNTER_HOST || 'localhost'}:3001/counter/${id}/incr`)
+    const response = await axios.get(url_api_books + id)
+    const book = response.data
+    const countVisible = await axios.post(`http://${COUNTER_ORIGIN}/counter/${id}/incr`)
     if (!book) res.status(404).redirect('/404')
     res.render('books/view', {
       title: book.title,
