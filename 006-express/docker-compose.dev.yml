@@ -36,6 +36,7 @@ services:
       - DB_PASSWORD=${DB_PASSWORD:-pass}
       - DB_NAME=${DB_NAME:-books}
       - DB_HOST=mongodb://mongoDB:27017
+      - REDIS_URL=redis://store:6379
     volumes:
       - ./library:/app
     depends_on:
