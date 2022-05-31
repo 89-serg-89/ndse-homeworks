@@ -1,0 +1,25 @@
+<%- include('../partials/layout-start.ejs'), { title: title } %>
+<div class="container">
+    <% if (error) { %>
+        <div class="alert alert-danger" role="alert">
+            <%= error %>
+        </div>
+    <% } %>
+    <table class="table table-striped">
+        <tbody>
+            <tr>
+                <td>Имя</td>
+                <td><%= user.username %></td>
+            </tr>
+            <tr>
+                <td>Логин</td>
+                <td><%= user.login %></td>
+            </tr>
+            <tr>
+                <td>Email</td>
+                <td><%= user.email %></td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+<%- include('../partials/layout-end.ejs') %>

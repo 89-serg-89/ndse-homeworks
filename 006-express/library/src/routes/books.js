@@ -3,7 +3,7 @@ const router = express.Router()
 const axios = require('axios').default
 const fileMiddleware = require('../middleware/file')
 
-const url_api_books = process.env.ORIGIN + ':' + process.env.PORT + process.env.API_BOOKS
+const url_api_books = process.env.ORIGIN + ':' + process.env.PORT + '/api/books'
 const COUNTER_ORIGIN = process.env.COUNTER_ORIGIN || 'localhost:3001'
 
 router.get('/create', (req, res) => {

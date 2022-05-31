@@ -7,15 +7,18 @@ const cookieParser = require('cookie-parser')
 const session = require('express-session')
 const { createClient } = require('redis')
 const RedisStore = require('connect-redis')(session)
+const axios = require('axios')
 
 const app = express()
 
 const userApiRouter = require('./routes/api/user')
 const booksApiRouter = require('./routes/api/books')
+const indexRouter = require('./routes/index')
 const booksRouter = require('./routes/books')
+const usersRouter = require('./routes/users')
 const errorsRouter = require('./routes/errors')
 
-const passport = require('./helpers/passport')
+const { passport } = require('./helpers/passport')
 
 const errorMiddleware = require('./middleware/error')
 
@@ -32,8 +35,9 @@ app.use(
   session({
     store: new RedisStore({ client: redisClient }),
     saveUninitialized: false,
-    secret: 'keyboard cat',
-    resave: false,
+    secret: 'netology course',
+    resave: true,
+    cookie: { secure: false }
   })
 )
 
@@ -46,10 +50,14 @@ app.use(express.json())
 app.use('/public', express.static(path.join(__dirname, '/public')))
 app.use('/', errorsRouter)
 app.use('/books', booksRouter)
+app.use('/', usersRouter)
+app.use('/', indexRouter)
 app.use('/api/user', userApiRouter)
 app.use('/api/books', booksApiRouter)
 
 app.use(errorMiddleware)
+
+axios.default.withCredentials = true
 
 const port = process.env.PORT || 3000
 

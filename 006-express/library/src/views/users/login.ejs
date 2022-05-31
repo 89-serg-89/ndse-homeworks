@@ -1,0 +1,22 @@
+<%- include('../partials/layout-start.ejs'), { title: title } %>
+<div class="container">
+    <% if (error) { %>
+        <div class="alert alert-danger" role="alert">
+            <%= error %>
+        </div>
+    <% } %>
+    <form action="/login" method="post">
+        <div class="mb-3">
+            <label for="inputLogin" class="form-label">Логин</label>
+            <input type="text" name="login" class="form-control" id="inputLogin">
+        </div>
+        <div class="mb-3">
+            <label for="inputPassword" class="form-label">Пароль</label>
+            <input type="password" name="password" class="form-control" id="inputPassword">
+        </div>
+        <button type="submit" class="btn btn-primary">Вход</button>
+        <hr />
+        Нет аккаунта? <a href="/signup">Регистрация</a>
+    </form>
+</div>
+<%- include('../partials/layout-end.ejs') %>
