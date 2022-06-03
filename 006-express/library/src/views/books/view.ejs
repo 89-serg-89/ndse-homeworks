@@ -25,5 +25,56 @@
             </div>
         </div>
     </div>
+    <div aria-live="polite" aria-atomic="true" class="position-relative bd-example-toasts">
+        <div class="toast-container p-3" id="toastPlacement"></div>
+    </div>
+    <div class="form-comment-wrap">
+        <div class="mb-3">
+            <label for="name" class="form-label">Имя</label>
+            <input type="text" class="form-control" id="name">
+        </div>
+        <div class="mb-3">
+            <label for="text-comm" class="form-label">Оставить коментарий</label>
+            <textarea class="form-control" id="text-comm" rows="3"></textarea>
+        </div>
+        <button id="submit-comm" type="submit" class="btn btn-primary">Отправить</button>
+    </div>
 </div>
+
+<script>
+  const roomName = location.pathname.split('/').pop()
+  const socket = io.connect('/', {query: `roomName=${roomName}`})
+  const inputName = document.getElementById('name')
+  const inputComm = document.getElementById('text-comm')
+  const btn = document.getElementById('submit-comm')
+  const toastWrap = document.getElementById('toastPlacement')
+
+  const addMsg = msg => {
+    const toast = `
+        <div class="toast show">
+                <div class="toast-header">
+                    <strong class="me-auto">Username</strong>
+                    <small>${msg.username}</small>
+                </div>
+                <div class="toast-body">
+                    ${msg.text}
+                </div>
+            </div>
+    `
+    toastWrap.insertAdjacentHTML('beforeend', toast)
+  }
+
+  btn.addEventListener('click', () => {
+    socket.emit('message', {
+      username: inputName.value,
+      text: inputComm.value,
+    })
+    inputName.value = ''
+    inputComm.value = ''
+  })
+
+  socket.on('message', (msg) => {
+    addMsg(msg)
+  });
+</script>
 <%- include('../partials/layout-end.ejs') %>

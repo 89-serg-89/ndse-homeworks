@@ -1,15 +1,22 @@
 require('dotenv').config()
 const path = require('path')
+const http = require('http')
 const express = require('express')
 const bodyParser = require('body-parser')
 const mongoose = require('mongoose')
 const cookieParser = require('cookie-parser')
 const session = require('express-session')
-const { createClient } = require('redis')
 const RedisStore = require('connect-redis')(session)
 const axios = require('axios')
 
+const { passport } = require('./helpers/passport')
+const socketConnect = require('./helpers/socket')
+const redisClient = require('./helpers/redis')
+
 const app = express()
+const server = http.createServer(app)
+redisClient.connect()
+socketConnect(server)
 
 const userApiRouter = require('./routes/api/user')
 const booksApiRouter = require('./routes/api/books')
@@ -18,16 +25,10 @@ const booksRouter = require('./routes/books')
 const usersRouter = require('./routes/users')
 const errorsRouter = require('./routes/errors')
 
-const { passport } = require('./helpers/passport')
-
 const errorMiddleware = require('./middleware/error')
 
 app.set('views', path.join(__dirname, '/views'))
 app.set('view engine', 'ejs')
-
-
-const redisClient = createClient({ url: process.env.REDIS_URL || 'redis://localhost:6379', legacyMode: true })
-redisClient.connect().catch(console.error)
 
 app.use(cookieParser())
 
@@ -71,7 +72,7 @@ const init = async () => {
       useUnifiedTopology: true
     })
     console.log('Соединение с БД успешно')
-    app.listen(port, () => {
+    server.listen(port, () => {
       console.log(`Library app listening on port ${port}`)
     })
   } catch ( e ) {
